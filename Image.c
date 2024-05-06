@@ -1,22 +1,23 @@
 //Vytis Etchegoyhen & Jaeiz Ocampo
 
 #include <stdio.h>
+
 #define Y_SIZE 100
 #define X_SIZE 100
+
 #define FILE_NAME "test_image.txt"
 //index
-void load(int row_size, int col_size, int image_array[][col_size], FILE* imagefileptr);
-void display(int row_size, int col_size, int image_array[][col_size], FILE* imagefileptr);
+void load(char image_array[][X_SIZE], FILE* imagefileptr, int *colm);
+void display(char image_array[][X_SIZE], FILE* imagefileptr, int *colm);
 //=====================================================================================================================
 int main(){
-	//char image[1000][1000];
-	int image_array[Y_SIZE][X_SIZE];
+	char image_array[Y_SIZE][X_SIZE];
+	int colm;
 	char choice;
-	int row_size;
-	int col_size;
 	
-	char filename[100];
 	int pass = 0;
+	char filename[100];
+	
 	FILE* imagefileptr;
 	
 	while(pass == 0){
@@ -35,8 +36,7 @@ int main(){
 			imagefileptr = fopen(filename, "r");
 			
 			if (imagefileptr != NULL){
-				load(row_size, col_size, image_array, imagefileptr);
-				printf("Image successfully loaded!\n\n");
+				load(image_array, imagefileptr, &colm);
 				
 			}else{
 				printf("Could not find an image with that filename.\n");
@@ -44,7 +44,7 @@ int main(){
 			}
 		}else if (choice == '2'){
 			//display current image
-			display(row_size, col_size, image_array, imagefileptr);
+			display(image_array, imagefileptr, &colm);
 			
 		}else if (choice == '3'){
 			//edit current image
@@ -82,21 +82,35 @@ int main(){
 return 0;
 }
 //=====================================================================================================================
-void load(int row_size, int col_size, int image_array[][col_size], FILE* imagefileptr){
+void load(char image_array[][X_SIZE], FILE* imagefileptr, int *colm){
 	
-	for(row_size = 0; row_size < X_SIZE; row_size++){
-		for(col_size = 0; col_size < Y_SIZE; col_size++){
-			fscanf(imagefileptr, "%d", &image_array[row_size][col_size]);
+	for(int j = 0; j <= X_SIZE; j++){
+		for(int i = 0; i >= 0; i++){
+			fscanf(imagefileptr, "%c", &image_array[j][i]);
+			if(image_array[j][0] == '\n' || image_array[j][0] == '\0'){
+				*colm = j;
+				goto end;
+				
+			}else if(image_array[j][i] == '\n' || image_array[j][i] == '\0'){
+				break;
+			}
 		}
 	}
+	end:
+	printf("\nImage successfully loaded!\n\n");
+	return;
 }
-void display(int row_size, int col_size, int image_array[][col_size], FILE* imagefileptr){
+void display(char image_array[][X_SIZE], FILE* imagefileptr, int *colm){
 	
-	printf("\n\n");
-	for(int i = row_size; i >= 0; i--){
-		for(int j = col_size; j >= 0; j--){
-			printf("%d", image_array[i][j]);
+	for(int j = 0; j < *colm; j++){
+		printf("\n");
+		for(int i = 0; i >= 0; i++){
+			printf("%c", image_array[j][i]);
+			if(image_array[j][i] == '\n' || image_array[j][i] == '\0'){
+				break;
+			}
 		}
 	}
-	printf("\n\n\n");
+	printf("\n\n");
+return;
 }

@@ -331,15 +331,31 @@ void crop(char chararray[][X_SIZE], char image_array[][X_SIZE], FILE* imagefilep
 	printf("\nWhich row do you want to be the new bottom? ");
 	scanf("%d", &newbottomrow);
 	
+	
+	
 	int x = newrightcol - newleftcol + 1;
 	int y = newbottomrow - newtoprow + 1;
-	char newArray[x][y];
+	char newArray[y][x];
+	
+	for(int a = newtoprow-1; a<newbottomrow; a++){
+		for(int b = newleftcol-1; b<newrightcol; b++){
+			for(int c = 0; c<y;c++){
+				for(int d = 0; c<x; d++){
+					newArray[c][d] = image_array[a][b];
+				}
+			}
+		}
+	}
+	
+	for(int a = 0; a<y; a++){
+		for(int b = 0; b<x; b++){
+			printf(" %c", newArray[a][b]);
+		}
+		printf("\n");
+	}
 	
 	
-	
-	
-	
-	display(chararray, newArray, imagefileptr, colm);
+	//display(chararray, newArray, imagefileptr, colm);
 	/*printf("Would you like to save the file? (y/n) ");
 	scanf(" %c", &choose);
 	if(choose == 'y'){

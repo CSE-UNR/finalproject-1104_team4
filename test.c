@@ -1,56 +1,141 @@
-//test file
+//Vytis Etchegoyhen & Jaeiz Ocampo
 
 #include <stdio.h>
-#define FILE_NAME "test.txt"
-#define MAXSIZE 500
+
+#define Y_SIZE 100
+#define X_SIZE 100
+
+#define FILE_NAME "test_image.txt"
 //index
-
-//====================================================================
-void load(FILE* fptr, int maxrows, int col, int array[][col], int* rows, int* cols);
-
-
+void load(char image_array[][X_SIZE], FILE* imagefileptr, int *colm, int *row);
+void display(char image_array[][X_SIZE], FILE* imagefileptr, int *colm);
+void crop(int rowSize, int colSize, char image_array[][X_SIZE]);
+//=====================================================================================================================
 int main(){
-	FILE* imageptr;
-	imageptr = fopen(FILE_NAME, "r");
-	int image[MAXSIZE][MAXSIZE], rowResult, colResult, choice;
+	char image_array[Y_SIZE][X_SIZE];
+	int colm, row;
+	char choice;
 	
-	load(imageptr, MAXSIZE, MAXSIZE, image, &rowResult, &colResult);
+	int pass = 0;
+	char filename[100];
 	
+	FILE* imagefileptr;
 	
-	printf("1. size, 2. array ");
-	scanf("%d", &choice);
-	if(choice == 1){
-		printf("row: %d col: %d \n", rowResult, colResult);
-	}else if(choice ==2){
-		for(int i = 0; i < rowResult; i++){
-			for(int j = 0; j < colResult; j++){
-				printf("%d", image[i][j]);
+	while(pass == 0){
+		printf("**ERINSTAGRAM**\n");
+		printf("1: Load image\n");
+		printf("2: Display image\n");
+		printf("3: Edit image\n");
+		printf("0: Exit Program\n");
+		printf("\nChoose from one of the options above: ");
+		scanf(" %c", &choice);
+		
+		if (choice == '1'){
+			//load new image
+			printf("What is the name of the image file? ");
+			scanf("%s", filename);
+			imagefileptr = fopen(filename, "r");
+			
+			if (imagefileptr != NULL){
+				load(image_array, imagefileptr, &colm, &row);
+				
+			}else{
+				printf("Could not find an image with that filename.\n");
+				
 			}
-		printf("\n");
-	}
-	
-	}
-	
-	
-	fclose(imageptr);
-	return 0;
-	
-}
-void load(FILE* fptr, int maxrows, int col, int array[][col], int* rows, int* cols){
-	
-	char temp;
-	int index = 0;
-	int index2 = 0;
-	
-	while(fscanf(fptr, "%d", &array[index][index2]) == 1){
-		index2++;
-		if(fscanf(fptr, "%c", &temp)==1){
-			index++;
-			index2 = 0;
+		}else if (choice == '2'){
+			//display current image
+			display(image_array, imagefileptr, &colm);
+			
+		}else if (choice == '3'){
+			//edit current image
+			printf("**Edit Current Image**\n");
+			printf("1: Crop image\n");
+			printf("2: Dim image\n");
+			printf("3: Brighten image\n");
+			printf("0: Return to main menu\n");
+			printf("\nChoose from one of the options above: ");
+			scanf(" %c", &choice);
+			
+			if (choice == '1'){
+				//crop
+				display(image_array, imagefileptr, &colm);
+				crop(row, colm, image_array);
+				
+				
+			}else if (choice == '2'){
+				//dim
+				
+			}else if (choice == '3'){
+				//lighten
+				
+			}else if (choice == '4'){
+				//rotate 90*
+				
+			}else{
+				printf("\nGoodbye!\n\n");
+				return 0;
+			}
+		}else{
+			printf("\nGoodbye!\n\n");
+			return 0;
 		}
 	}
+
+	fclose(imagefileptr);	
+return 0;
+}
+//=====================================================================================================================
+void load(char image_array[][X_SIZE], FILE* imagefileptr, int *colm, int *row){
 	
-	*rows = index;
-	*cols = index2;
+	for(int j = 0; j <= X_SIZE; j++){
+		for(int i = 0; i >= 0; i++){
+			fscanf(imagefileptr, "%c", &image_array[j][i]);
+			if(image_array[j][0] == '\n' || image_array[j][0] == '\0'){
+				*colm = j;
+				goto end;
+				
+			}else if(image_array[j][i] == '\n' || image_array[j][i] == '\0'){
+				*row = i;
+				break;
+			}
+		}
+	}
+	end:
+	printf("\nImage successfully loaded!\n\n");
+	return;
+}
+void display(char image_array[][X_SIZE], FILE* imagefileptr, int *colm){
+	
+	for(int j = 0; j < *colm; j++){
+		printf("\n");
+		for(int i = 0; i >= 0; i++){
+			printf("%c", image_array[j][i]);
+			if(image_array[j][i] == '\n' || image_array[j][i] == '\0'){
+				break;
+			}
+		}
+	}
+	printf("\n\n");
+return;
+}
+void crop(int rowSize, int colSize, char image_array[][X_SIZE]){
+	
+	char newArray[Y_SIZE][X_SIZE];
+	int newleftcol, newrightcol, newtoprow, newbottomrow;
+	printf("The image you want to crop is %d x %d.\n", colSize, rowSize);
+	//printf("The row and column values start in the upper lefthand corner.\n");
+	printf("\nWhich column do you want to be the new left side? ");
+	scanf("%d", &newleftcol);
+	printf("\nWhich column do you want to be the right left side? ");
+	scanf("%d", &newrightcol);
+	printf("\nWhich row do you want to be the new top? ");
+	scanf("%d", &newtoprow);
+	printf("\nWhich row do you want to be the new bottom? ");
+	scanf("%d", &newbottomrow);
+	
+	
+	
+	
 }
 

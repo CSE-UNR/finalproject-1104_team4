@@ -6,7 +6,7 @@
 #define X_SIZE 100
 
 //#define FILE_NAME "test_image.txt"
-
+#define TEMP_FILE "temporary.txt"
 //index
 void load(char image_array[][X_SIZE], FILE* imagefileptr, int *colm, int *row);
 void display(char chararray[][X_SIZE], char image_array[][X_SIZE], FILE* imagefileptr, int *colm);
@@ -316,10 +316,12 @@ return;
 }
 void crop(char chararray[][X_SIZE], char image_array[][X_SIZE], FILE* imagefileptr, int *colm, char *filename, int rowSize, int colSize){
 	
+	
 	char choose;
 	int newleftcol, newrightcol, newtoprow, newbottomrow;
-	int index = 0;
-	int index2 = 0;
+	int temp1, temp2;
+	
+	
 	printf("The image you want to crop is %d x %d.\n", colSize, rowSize);
 	//printf("The row and column values start in the upper lefthand corner.\n");
 	printf("\nWhich column do you want to be the new left side? ");
@@ -331,31 +333,27 @@ void crop(char chararray[][X_SIZE], char image_array[][X_SIZE], FILE* imagefilep
 	printf("\nWhich row do you want to be the new bottom? ");
 	scanf("%d", &newbottomrow);
 	
-	
-	
 	int x = newrightcol - newleftcol + 1;
 	int y = newbottomrow - newtoprow + 1;
 	char newArray[y][x];
 	
-	for(int a = newtoprow-1; a<newbottomrow; a++){
-		for(int b = newleftcol-1; b<newrightcol; b++){
-			for(int c = 0; c<y;c++){
-				for(int d = 0; c<x; d++){
-					newArray[c][d] = image_array[a][b];
-				}
-			}
+	for(int a = 0; a < y; a++){
+		for(int b = 0; b<x; b++){
+			newArray[a][b] = image_array[a+(newtoprow - 1)][b + (newleftcol -1)];
 		}
+		
 	}
 	
-	for(int a = 0; a<y; a++){
+	//prints the new cropped array (works)
+	/*for(int a = 0; a<y; a++){
 		for(int b = 0; b<x; b++){
 			printf(" %c", newArray[a][b]);
 		}
 		printf("\n");
-	}
+	}*/
 	
 	
-	//display(chararray, newArray, imagefileptr, colm);
+	//display(chararray, newArray, imagefileptr, &y);
 	/*printf("Would you like to save the file? (y/n) ");
 	scanf(" %c", &choose);
 	if(choose == 'y'){

@@ -382,7 +382,7 @@ void crop(char chararray[][X_SIZE], char image_array[][X_SIZE], FILE* imagefilep
 	printf("The row and column values start in the upper lefthand corner.\n");
 	printf("\nWhich column do you want to be the new left side? ");
 	scanf("%d", &newleftcol);
-	printf("\nWhich column do you want to be the right left side? ");
+	printf("\nWhich column do you want to be the new right side? ");
 	scanf("%d", &newrightcol);
 	printf("\nWhich row do you want to be the new top? ");
 	scanf("%d", &newtoprow);
